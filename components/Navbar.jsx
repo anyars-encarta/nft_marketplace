@@ -75,13 +75,11 @@ const Navbar = () => {
       </div>
 
       <div className="md:hidden flex">
-        <ul className="list-none flexCenter flex-row">
           <MenuItems
             isMobile={isMobile}
             active={active}
             setActive={setActive}
           />
-        </ul>
       </div>
     </nav>
   );
