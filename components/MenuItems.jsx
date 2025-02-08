@@ -2,7 +2,7 @@ import { generateLink } from "@/utils";
 import Link from "next/link";
 import React from "react";
 
-const MenuItems = ({ isMobile, active, setActive }) => {
+const MenuItems = ({ isMobile, setIsMobile, active, setActive, isOpen, setIsOpen }) => {
   return (
     <ul
       className={`list-none flexCenter flex-row ${isMobile && "flex-col h-full"}`}
@@ -10,7 +10,10 @@ const MenuItems = ({ isMobile, active, setActive }) => {
       {["Explore NFTs", "Listed NFTs", "My NFTs"].map((item, i) => (
         <li
           key={i}
-          onClick={() => setActive(item)}
+          onClick={() => {
+            setActive(item)
+            isOpen && setIsOpen(false)
+          }}
           className={`flex flex-row items-center font-poppins font-semibold text-base dark:hover:text-white hover:text-nft-dark mx-3 ${
             active === item
               ? "dark:text-white text-nft-black-1"

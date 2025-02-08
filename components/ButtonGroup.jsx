@@ -3,7 +3,7 @@
 import React from "react";
 import { Button } from ".";
 
-const ButtonGroup = ({ setActive, redirect }) => {
+const ButtonGroup = ({ setActive, redirect, isOpen, setIsOpen }) => {
   const hasConnected = true;
 
   return hasConnected ? (
@@ -11,6 +11,7 @@ const ButtonGroup = ({ setActive, redirect }) => {
       btnName="Create"
       classStyles="nft-gradient text-white mx-2 rounded-xl"
       handleClick={() => {
+        isOpen && setIsOpen(false)
         setActive('');
         redirect('/create-nft');
       }}
@@ -19,7 +20,9 @@ const ButtonGroup = ({ setActive, redirect }) => {
     <Button
       btnName="Connect"
       classStyles="border border-nft-red-violet text-nft-red-violet mx-2 rounded-xl"
-      handleClick={() => {}}
+      handleClick={() => {
+        isOpen && setIsOpen(false)
+      }}
     />
   );
 };

@@ -88,45 +88,54 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className='hidden md:flex ml-2'>
+      <div className="hidden md:flex ml-2">
         {isOpen ? (
           <Image
             src={images.cross}
             width={20}
             height={20}
             alt="close"
-            className={`${theme === 'light' ? 'filter invert' : ''} object-contain`}
+            className={`${theme === "light" ? "filter invert" : ""} object-contain`}
             onClick={() => {
               setIsMobile(false);
-              setIsOpen(false)
+              setIsOpen(false);
             }}
           />
-        ):(
+        ) : (
           <Image
             src={images.menu}
             width={25}
             height={25}
             alt="menu"
-            className={`${theme === 'light' ? 'filter invert' : ''} object-contain`}
+            className={`${theme === "light" ? "filter invert" : ""} object-contain`}
             onClick={() => {
               setIsMobile(true);
-              setIsOpen(true)
+              setIsOpen(true);
             }}
           />
         )}
 
         {isOpen && (
-          <div className='fixed inset-0 top-65 dark:bg-nft-dark bg-white z-10 nav-h flex justify-between flex-col'>
-            <div className='flex-1 p-4'>
+          <div className="fixed inset-0 top-65 dark:bg-nft-dark bg-white z-10 nav-h flex justify-between flex-col">
+            <div className="flex-1 p-4">
               <MenuItems
                 isMobile={isMobile}
+                setIsMobile={setIsMobile}
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
                 active={active}
                 setActive={setActive}
               />
             </div>
 
-            <div className='p-4 border-t dark:border-nft-black-1 border-nft-gray-1'>
-              <ButtonGroup setActive={setActive} redirect={redirect} />
+            <div className="p-4 border-t dark:border-nft-black-1 border-nft-gray-1">
+              <ButtonGroup
+                setActive={setActive}
+                redirect={redirect}
+                setIsMobile={setIsMobile}
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+              />
             </div>
           </div>
         )}
