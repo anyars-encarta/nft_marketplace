@@ -1,8 +1,7 @@
 import React from 'react'
 
-const page = ({ params }) => {
-    const { id } = params;
-
+const page = async ({params}) => {
+    const { id } = await params;
   return (
     <div>NFT Details for: {id}</div>
   )
