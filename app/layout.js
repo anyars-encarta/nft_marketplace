@@ -1,4 +1,7 @@
+import Script from "next/script";
 import ThemeProvider from "@/context/Theme";
+
+import { Footer, Navbar } from "@/components";
 import "./globals.css";
 // import localFont from "next/font/local";
 
@@ -32,7 +35,16 @@ export default function RootLayout({ children }) {
           enableSystem
           diasbleTransitionOnChange
         >
-          {children}
+          <div className="dark:bg-nft-dark bg-white min-h-screen">
+            <Navbar />
+            {children}
+            <Footer />
+          </div>
+
+          <Script
+            src="https://kit.fontawesome.com/a6d38f6541.js"
+            crossorigin="anonymous"
+          ></Script>
         </ThemeProvider>
       </body>
     </html>
