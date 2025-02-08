@@ -28,7 +28,7 @@ const Navbar = () => {
         <Link href="/">
           <div
             className="flexCenter md:hidden cursor-pointer"
-            onClick={() => handleRedirect("/")}
+            onClick={() => redirect("/")}
           >
             <Image
               src={images.logo02}
