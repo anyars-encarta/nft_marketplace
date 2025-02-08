@@ -1,19 +1,21 @@
 "use client";
 
-import React, { useState, useEffect, useContext } from "react";
-import { useRouter } from "next/router";
+import React, { useState, useEffect, useContext, use } from "react";
+import { redirect } from "next/navigation";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
 
 import images from "@/assets";
-import { MenuItems } from ".";
+import { MenuItems, ButtonGroup } from ".";
 
 const Navbar = () => {
   const initialTheme = localStorage.getItem("theme") || "light";
   const { theme, setTheme } = useTheme(initialTheme);
+
   const [isMobile, setIsMobile] = useState(false);
   const [active, setActive] = useState("Explore NFTs");
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -26,7 +28,7 @@ const Navbar = () => {
         <Link href="/">
           <div
             className="flexCenter md:hidden cursor-pointer"
-            onClick={() => {}}
+            onClick={() => handleRedirect("/")}
           >
             <Image
               src={images.logo02}
@@ -72,14 +74,62 @@ const Navbar = () => {
             <div className="w-3 h-3 absolute bg-white rounded-full ball" />
           </label>
         </div>
-      </div>
 
-      <div className="md:hidden flex">
+        <div className="md:hidden flex">
           <MenuItems
             isMobile={isMobile}
             active={active}
             setActive={setActive}
           />
+
+          <div className="ml-4">
+            <ButtonGroup setActive={setActive} redirect={redirect} />
+          </div>
+        </div>
+      </div>
+
+      <div className='hidden md:flex ml-2'>
+        {isOpen ? (
+          <Image
+            src={images.cross}
+            width={20}
+            height={20}
+            alt="close"
+            className={`${theme === 'light' ? 'filter invert' : ''} object-contain`}
+            onClick={() => {
+              setIsMobile(false);
+              setIsOpen(false)
+            }}
+          />
+        ):(
+          <Image
+            src={images.menu}
+            width={25}
+            height={25}
+            alt="menu"
+            className={`${theme === 'light' ? 'filter invert' : ''} object-contain`}
+            onClick={() => {
+              setIsMobile(true);
+              setIsOpen(true)
+            }}
+          />
+        )}
+
+        {isOpen && (
+          <div className='fixed inset-0 top-65 dark:bg-nft-dark bg-white z-10 nav-h flex justify-between flex-col'>
+            <div className='flex-1 p-4'>
+              <MenuItems
+                isMobile={isMobile}
+                active={active}
+                setActive={setActive}
+              />
+            </div>
+
+            <div className='p-4 border-t dark:border-nft-black-1 border-nft-gray-1'>
+              <ButtonGroup setActive={setActive} redirect={redirect} />
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
