@@ -1,0 +1,1 @@
+export const navItems = ["Explore NFTs", "Listed NFTs", "My NFTs"]

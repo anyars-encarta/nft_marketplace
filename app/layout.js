@@ -44,7 +44,7 @@ export default function RootLayout({ children }) {
           <Script
             src="https://kit.fontawesome.com/a6d38f6541.js"
             crossorigin="anonymous"
-          ></Script>
+          />
         </ThemeProvider>
       </body>
     </html>
