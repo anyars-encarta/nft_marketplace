@@ -5,5 +5,15 @@ import ButtonGroup from "./ButtonGroup";
 import Button from "./Button";
 import FooterLinks from "./FooterLinks";
 import Banner from "./Banner";
+import CreatorCard from "./CreatorCard";
 
-export { Navbar, Footer, MenuItems, ButtonGroup, Button, FooterLinks, Banner };
+export {
+  Navbar,
+  Footer,
+  MenuItems,
+  ButtonGroup,
+  Button,
+  FooterLinks,
+  Banner,
+  CreatorCard,
+};
