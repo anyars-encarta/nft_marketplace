@@ -27,7 +27,7 @@ const Navbar = () => {
       <div className="flex flex-1 flex-row justify-start">
         <Link href="/">
           <div
-            className="flexCenter md:hidden cursor-pointer"
+            className="flexCenter cursor-pointer"
             onClick={() => redirect("/")}
           >
             <Image
@@ -38,21 +38,9 @@ const Navbar = () => {
               className="object-contain"
             />
 
-            <p className="dark:text-white text-nft-black-1 font-semibold text-lg ml-1">
+            <p className="dark:text-white text-nft-black-1 font-semibold text-lg ml-1 md:hidden flex">
               KryptoKet
             </p>
-          </div>
-        </Link>
-
-        <Link href="/">
-          <div className="hidden md:flex cursor-pointer" onClick={() => {}}>
-            <Image
-              src={images.logo02}
-              width={32}
-              height={32}
-              alt="logo"
-              className="object-contain"
-            />
           </div>
         </Link>
       </div>

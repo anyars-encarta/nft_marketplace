@@ -1,3 +1,4 @@
+import { navItems } from "@/constants";
 import { generateLink } from "@/utils";
 import Link from "next/link";
 import React from "react";
@@ -7,7 +8,7 @@ const MenuItems = ({ isMobile, setIsMobile, active, setActive, isOpen, setIsOpen
     <ul
       className={`list-none flexCenter flex-row ${isMobile && "flex-col h-full"}`}
     >
-      {["Explore NFTs", "Listed NFTs", "My NFTs"].map((item, i) => (
+      {navItems.map((item, i) => (
         <li
           key={i}
           onClick={() => {
