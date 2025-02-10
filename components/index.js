@@ -6,7 +6,8 @@ import Button from "./Button";
 import FooterLinks from "./FooterLinks";
 import Banner from "./Banner";
 import CreatorCard from "./CreatorCard";
-
+import NFTCard
+ from "./NFTCard";
 export {
   Navbar,
   Footer,
@@ -16,4 +17,5 @@ export {
   FooterLinks,
   Banner,
   CreatorCard,
+  NFTCard
 };
