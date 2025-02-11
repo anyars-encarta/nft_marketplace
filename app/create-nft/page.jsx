@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 import { useTheme } from "next-themes";
-import { Button } from "../../components";
+import { Button, Input } from "../../components";
 import images from "../../assets";
 
 const page = () => {
@@ -28,6 +28,8 @@ const page = () => {
     maxSize: 5000000,
   });
 
+  const inputClasses = 'dark:bg-nft-black-1 bg-white border dark:border-nft-black-1 border-nft-gray-2 rounded-lg w-full outline-none font-poppins dark:text-white text-nft-gray-2 text-base mt-4 px-4 py-3';
+
   const fileStyle = useMemo(() => {
     return `dark:bg-nft-black-1 bg-white border dark:border-white border-nft-gray-2 flex flex-col items-center p-5 rounded-sm border-dashed
     ${isDragActive && "border-file-active"}
@@ -48,10 +50,7 @@ const page = () => {
           </p>
 
           <div className="mt-4">
-            <div
-              {...getRootProps()}
-              className={fileStyle}
-            >
+            <div {...getRootProps()} className={fileStyle}>
               <input {...getInputProps()} />
 
               <div className="flexCenter flex-col text-center">
@@ -88,6 +87,40 @@ const page = () => {
               </aside>
             )}
           </div>
+        </div>
+
+        <Input
+          inputType="input"
+          title="Name"
+          placeholder="NFT Name"
+          handleChange={() => {}}
+          className={inputClasses}
+        />
+
+        <Input
+          inputType="textarea"
+          title="Description"
+          placeholder="NFT Description"
+          rows={5}
+          handleChange={() => {}}
+          className={inputClasses}
+        />
+
+        <Input
+          inputType="number"
+          title="Price"
+          placeholder="NFT Price"
+          rows={5}
+          handleChange={() => {}}
+          className={inputClasses}
+        />
+
+        <div className='mt-7 w-full flex justify-end'>
+          <Button
+            btnName="Create NFT"
+            classStyles="nft-gradient text-white rounded-md"
+            handleClick={() => {}}
+          />
         </div>
       </div>
     </div>
