@@ -1,8 +1,8 @@
 const page = async ({searchParams}) => {
-    const { nft } = await searchParams;
-    console.log("Search Params: ", {nft});
+    const data = await searchParams;
+    console.log("Search Params: ", { data });
   return (
-    <div>NFT Details for: {nft}</div>
+    <div>NFT Details for: {data.i}</div>
   )
 }
 
