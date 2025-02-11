@@ -5,11 +5,17 @@ import { redirect } from "next/navigation";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 import { useTheme } from "next-themes";
-import { Button } from "../../components";
+import { Button, Input } from "../../components";
 import images from "../../assets";
 
 const page = () => {
   const [fileUrl, setFileUrl] = useState(null);
+  const [formInput, setFormInput] = useState({
+    price: "",
+    name: "",
+    description: "",
+  });
+
   const { theme } = useTheme();
 
   const onDrop = useCallback(() => {
@@ -28,13 +34,17 @@ const page = () => {
     maxSize: 5000000,
   });
 
+  const inputClasses = 'dark:bg-nft-black-1 bg-white border dark:border-nft-black-1 border-nft-gray-2 rounded-lg w-full outline-none font-poppins dark:text-white text-nft-gray-2 text-base mt-4 px-4 py-3';
+
   const fileStyle = useMemo(() => {
-    `dark:bg-nft-black-1 bg-white border dark:border-white border-nft-gray-2 flex flex-col items-center p-5 rounded-sm border-dashed
+    return `dark:bg-nft-black-1 bg-white border dark:border-white border-nft-gray-2 flex flex-col items-center p-5 rounded-sm border-dashed
     ${isDragActive && "border-file-active"}
     ${isDragAccept && "border-file-accept"}
     ${isDragReject && "border-file-reject"}`;
   }, [isDragActive, isDragAccept, isDragReject]);
 
+  console.log("Form Data: ", formInput);
+  
   return (
     <div className="flex justify-center sm:px-4 p-12">
       <div className="w-3/5 md:w-full">
@@ -48,10 +58,7 @@ const page = () => {
           </p>
 
           <div className="mt-4">
-            <div
-              {...getRootProps()}
-              className={`${fileStyle} dark:bg-nft-black-1 bg-white border dark:border-white border-nft-gray-2 flex flex-col items-center p-5 rounded-sm border-dashed ${isDragActive && "border-file-active"} ${isDragAccept && "border-file-accept"} ${isDragReject && "border-file-reject"}`}
-            >
+            <div {...getRootProps()} className={fileStyle}>
               <input {...getInputProps()} />
 
               <div className="flexCenter flex-col text-center">
@@ -88,6 +95,40 @@ const page = () => {
               </aside>
             )}
           </div>
+        </div>
+
+        <Input
+          inputType="input"
+          title="Name"
+          placeholder="NFT Name"
+          handleChange={(e) => setFormInput({ ...formInput, name: e.target.value })}
+          className={inputClasses}
+        />
+
+        <Input
+          inputType="textarea"
+          title="Description"
+          placeholder="NFT Description"
+          rows={5}
+          handleChange={(e) => setFormInput({ ...formInput, description: e.target.value })}
+          className={inputClasses}
+        />
+
+        <Input
+          inputType="number"
+          title="Price"
+          placeholder="NFT Price"
+          rows={5}
+          handleChange={(e) => setFormInput({ ...formInput, price: e.target.value })}
+          className={inputClasses}
+        />
+
+        <div className='mt-7 w-full flex justify-end'>
+          <Button
+            btnName="Create NFT"
+            classStyles="nft-gradient text-white rounded-md"
+            handleClick={() => {}}
+          />
         </div>
       </div>
     </div>
