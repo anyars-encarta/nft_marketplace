@@ -10,6 +10,12 @@ import images from "../../assets";
 
 const page = () => {
   const [fileUrl, setFileUrl] = useState(null);
+  const [formInput, setFormInput] = useState({
+    price: "",
+    name: "",
+    description: "",
+  });
+
   const { theme } = useTheme();
 
   const onDrop = useCallback(() => {
@@ -37,6 +43,8 @@ const page = () => {
     ${isDragReject && "border-file-reject"}`;
   }, [isDragActive, isDragAccept, isDragReject]);
 
+  console.log("Form Data: ", formInput);
+  
   return (
     <div className="flex justify-center sm:px-4 p-12">
       <div className="w-3/5 md:w-full">
@@ -93,7 +101,7 @@ const page = () => {
           inputType="input"
           title="Name"
           placeholder="NFT Name"
-          handleChange={() => {}}
+          handleChange={(e) => setFormInput({ ...formInput, name: e.target.value })}
           className={inputClasses}
         />
 
@@ -102,7 +110,7 @@ const page = () => {
           title="Description"
           placeholder="NFT Description"
           rows={5}
-          handleChange={() => {}}
+          handleChange={(e) => setFormInput({ ...formInput, description: e.target.value })}
           className={inputClasses}
         />
 
@@ -111,7 +119,7 @@ const page = () => {
           title="Price"
           placeholder="NFT Price"
           rows={5}
-          handleChange={() => {}}
+          handleChange={(e) => setFormInput({ ...formInput, price: e.target.value })}
           className={inputClasses}
         />
 
