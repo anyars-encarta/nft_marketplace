@@ -29,7 +29,7 @@ const page = () => {
   });
 
   const fileStyle = useMemo(() => {
-    `dark:bg-nft-black-1 bg-white border dark:border-white border-nft-gray-2 flex flex-col items-center p-5 rounded-sm border-dashed
+    return `dark:bg-nft-black-1 bg-white border dark:border-white border-nft-gray-2 flex flex-col items-center p-5 rounded-sm border-dashed
     ${isDragActive && "border-file-active"}
     ${isDragAccept && "border-file-accept"}
     ${isDragReject && "border-file-reject"}`;
@@ -50,7 +50,7 @@ const page = () => {
           <div className="mt-4">
             <div
               {...getRootProps()}
-              className={`${fileStyle} dark:bg-nft-black-1 bg-white border dark:border-white border-nft-gray-2 flex flex-col items-center p-5 rounded-sm border-dashed ${isDragActive && "border-file-active"} ${isDragAccept && "border-file-accept"} ${isDragReject && "border-file-reject"}`}
+              className={fileStyle}
             >
               <input {...getInputProps()} />
 
