@@ -1,6 +1,7 @@
 import Script from "next/script";
 import ThemeProvider from "@/context/Theme";
 
+import { NFTProvider } from "@/context/NFTContext";
 import { Footer, Navbar } from "@/components";
 import "./globals.css";
 // import localFont from "next/font/local";
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
       <body
       // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+      <NFTProvider>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -48,6 +50,7 @@ export default function RootLayout({ children }) {
             crossorigin="anonymous"
           />
         </ThemeProvider>
+      </NFTProvider>
       </body>
     </html>
   );

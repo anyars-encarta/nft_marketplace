@@ -9,23 +9,41 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nomiclabs/hardhat-waffle": "2.0.3",
     "@openzeppelin/contracts": "4.5.0",
+    "axios": "^1.7.9",
     "eslint-config-prettier": "^10.0.1",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-tailwindcss": "^3.18.0",
+    "ethers": "5.5.4",
+    "hardhat": "2.9.0",
     "next": "15.1.6",
     "next-themes": "^0.4.4",
     "prettier": "^3.4.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-dropzone": "^14.3.5",
-    "hardhat": "^2.22.18"
+    "web3modal": "^1.9.12"
   },
   "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.8",
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
+    "@nomicfoundation/hardhat-ignition-ethers": "^0.15.9",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.12",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.12",
+    "@typechain/ethers-v6": "^0.5.1",
+    "@typechain/hardhat": "^9.1.0",
+    "@types/mocha": "^10.0.10",
+    "chai": "^4.5.0",
     "eslint-plugin-import": "^2.31.0",
+    "hardhat-gas-reporter": "^1.0.10",
     "postcss": "^8",
-    "tailwindcss": "^3.4.1"
+    "solidity-coverage": "^0.8.14",
+    "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
+    "typechain": "^8.3.2",
+    "typescript": "^5.7.3"
   },
   "packageManager": "npm@10.9.0",
   "overrides": {
