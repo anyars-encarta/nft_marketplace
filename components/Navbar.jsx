@@ -8,6 +8,7 @@ import Link from "next/link";
 
 import images from "@/assets";
 import { MenuItems, ButtonGroup } from ".";
+import { NFTContext } from "@/context/NFTContext";
 
 const Navbar = () => {
   const initialTheme = localStorage.getItem("theme") || "light";
@@ -17,10 +18,20 @@ const Navbar = () => {
   const [active, setActive] = useState("Explore NFTs");
   const [isOpen, setIsOpen] = useState(false);
 
+  const { connectWallet, currentAccount } = useContext(NFTContext);
+
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
     localStorage.setItem("theme", theme === "dark" ? "light" : "dark");
   };
+
+  useEffect(() => {
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", () => {
+        connectWallet();
+      });
+    }
+  }, []);
 
   return (
     <nav className="flexBetween w-full fixed z-10 p-4 flex-row border-b dark:bg-nft-dark bg-white dark:border-nft-black-1 border-nft-gray-1">
@@ -71,7 +82,12 @@ const Navbar = () => {
           />
 
           <div className="ml-4">
-            <ButtonGroup setActive={setActive} redirect={redirect} />
+            <ButtonGroup
+              setActive={setActive}
+              redirect={redirect}
+              connectWallet={connectWallet}
+              currentAccount={currentAccount}
+            />
           </div>
         </div>
       </div>
@@ -123,6 +139,8 @@ const Navbar = () => {
                 setIsMobile={setIsMobile}
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
+                connectWallet={connectWallet}
+                currentAccount={currentAccount}
               />
             </div>
           </div>
