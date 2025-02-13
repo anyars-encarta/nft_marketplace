@@ -3,10 +3,9 @@
 import React from "react";
 import { Button } from ".";
 
-const ButtonGroup = ({ setActive, redirect, isOpen, setIsOpen }) => {
-  const hasConnected = true;
+const ButtonGroup = ({ setActive, redirect, isOpen, setIsOpen, connectWallet, currentAccount }) => {
 
-  return hasConnected ? (
+  return currentAccount ? (
     <Button
       btnName="Create"
       classStyles="nft-gradient text-white mx-2 rounded-xl"
@@ -21,6 +20,7 @@ const ButtonGroup = ({ setActive, redirect, isOpen, setIsOpen }) => {
       btnName="Connect"
       classStyles="border border-nft-red-violet text-nft-red-violet mx-2 rounded-xl"
       handleClick={() => {
+        connectWallet();
         isOpen && setIsOpen(false)
       }}
     />
