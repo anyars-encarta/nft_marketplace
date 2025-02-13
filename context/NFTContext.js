@@ -10,10 +10,10 @@ import {MarketAddress, MarketAddressABI} from '../constants/constants';
 export const NFTContext = React.createContext();
 
 export const NFTProvider = ({ children }) => {
-    const nftContext = 'ETH';
+    const nftCurrency = 'MATIC';
 
     return (
-        <NFTContext.Provider value={{ nftContext }}>
+        <NFTContext.Provider value={{ nftCurrency }}>
             {children}
         </NFTContext.Provider>
     )
