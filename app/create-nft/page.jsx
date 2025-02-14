@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useTheme } from "next-themes";
 import { Button, Input } from "../../components";
 import images from "../../assets";
+import { NFTContext } from "@/context/NFTContext";
 
 const page = () => {
   const [fileUrl, setFileUrl] = useState(null);
@@ -17,9 +18,12 @@ const page = () => {
   });
 
   const { theme } = useTheme();
+  const { uploadToIPFS } = useContext(NFTContext);
 
-  const onDrop = useCallback(() => {
-    // upload image to the ipfs blockchain
+  const onDrop = useCallback(async (acceptedFile) => {
+    const url = await uploadToIPFS(acceptedFile[0]);
+  
+    setFileUrl(url);
   }, []);
 
   const {
@@ -34,7 +38,8 @@ const page = () => {
     maxSize: 5000000,
   });
 
-  const inputClasses = 'dark:bg-nft-black-1 bg-white border dark:border-nft-black-1 border-nft-gray-2 rounded-lg w-full outline-none font-poppins dark:text-white text-nft-gray-2 text-base mt-4 px-4 py-3';
+  const inputClasses =
+    "dark:bg-nft-black-1 bg-white border dark:border-nft-black-1 border-nft-gray-2 rounded-lg w-full outline-none font-poppins dark:text-white text-nft-gray-2 text-base mt-4 px-4 py-3";
 
   const fileStyle = useMemo(() => {
     return `dark:bg-nft-black-1 bg-white border dark:border-white border-nft-gray-2 flex flex-col items-center p-5 rounded-sm border-dashed
@@ -43,8 +48,8 @@ const page = () => {
     ${isDragReject && "border-file-reject"}`;
   }, [isDragActive, isDragAccept, isDragReject]);
 
-  console.log("Form Data: ", formInput);
-  
+  // console.log("Form Data: ", formInput);
+
   return (
     <div className="flex justify-center sm:px-4 p-12">
       <div className="w-3/5 md:w-full">
@@ -90,7 +95,10 @@ const page = () => {
             {fileUrl && (
               <aside>
                 <div>
-                  <img src={fileUrl} alt="asset_file" />
+                  <img
+                    src={fileUrl}
+                    alt="asset_file"
+                  />
                 </div>
               </aside>
             )}
@@ -101,7 +109,9 @@ const page = () => {
           inputType="input"
           title="Name"
           placeholder="NFT Name"
-          handleChange={(e) => setFormInput({ ...formInput, name: e.target.value })}
+          handleChange={(e) =>
+            setFormInput({ ...formInput, name: e.target.value })
+          }
           className={inputClasses}
         />
 
@@ -110,7 +120,9 @@ const page = () => {
           title="Description"
           placeholder="NFT Description"
           rows={5}
-          handleChange={(e) => setFormInput({ ...formInput, description: e.target.value })}
+          handleChange={(e) =>
+            setFormInput({ ...formInput, description: e.target.value })
+          }
           className={inputClasses}
         />
 
@@ -119,11 +131,13 @@ const page = () => {
           title="Price"
           placeholder="NFT Price"
           rows={5}
-          handleChange={(e) => setFormInput({ ...formInput, price: e.target.value })}
+          handleChange={(e) =>
+            setFormInput({ ...formInput, price: e.target.value })
+          }
           className={inputClasses}
         />
 
-        <div className='mt-7 w-full flex justify-end'>
+        <div className="mt-7 w-full flex justify-end">
           <Button
             btnName="Create NFT"
             classStyles="nft-gradient text-white rounded-md"
