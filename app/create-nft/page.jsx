@@ -23,8 +23,6 @@ const page = () => {
   const onDrop = useCallback(async (acceptedFile) => {
     const url = await uploadToIPFS(acceptedFile[0]);
   
-    console.log({ url });
-  
     setFileUrl(url);
   }, []);
 
