@@ -11,18 +11,19 @@ import { NFTContext } from "@/context/NFTContext";
 
 const Home = () => {
   const [hideButtons, setHideButtons] = useState(false);
-  // const [nfts, setNfts] = useState([]);
+  const [nfts, setNfts] = useState([]);
   const parentRef = useRef(null);
   const scrollRef = useRef(null);
   // const { fetchNFTs } = useContext(NFTContext);
 
   const { theme } = useTheme();
 
-  // useEffect(() => {
+  useEffect(() => {
   //   fetchNFTs().then((items) => {
   //     setNfts(items);
   //   });
-  // }, []);
+  setNfts([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  }, []);
 
   const handleScroll = (direction) => {
     const current = scrollRef.current;
@@ -133,7 +134,7 @@ const Home = () => {
             {/* {nfts.map((nft) => (
               <NFTCard key={nft.tokenId} nft={nft} />
             ))} */}
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+            {nfts.map((i) => (
               <NFTCard
                 key={`nft-${i}`}
                 nft={{
