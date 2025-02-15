@@ -3,7 +3,7 @@ export const generateLink = (i) => {
       case 0:
         return "/";
       case 1:
-        return "/created-nfts";
+        return "/listed-nfts";
       case 2:
         return "/my-nfts";
       default:
