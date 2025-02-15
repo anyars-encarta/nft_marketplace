@@ -1,19 +1,28 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 
 import { Banner, CreatorCard, NFTCard } from "@/components";
 import images from "@/assets";
 import { makeId } from "@/utils";
 import Image from "next/image";
 import { useTheme } from "next-themes";
+import { NFTContext } from "@/context/NFTContext";
 
 const Home = () => {
   const [hideButtons, setHideButtons] = useState(false);
+  // const [nfts, setNfts] = useState([]);
   const parentRef = useRef(null);
   const scrollRef = useRef(null);
+  // const { fetchNFTs } = useContext(NFTContext);
 
   const { theme } = useTheme();
+
+  // useEffect(() => {
+  //   fetchNFTs().then((items) => {
+  //     setNfts(items);
+  //   });
+  // }, []);
 
   const handleScroll = (direction) => {
     const current = scrollRef.current;
@@ -121,6 +130,9 @@ const Home = () => {
           </div>
 
           <div className="mt-3 w-full flexStart flex-wrap justify-start md:justify-center">
+            {/* {nfts.map((nft) => (
+              <NFTCard key={nft.tokenId} nft={nft} />
+            ))} */}
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
               <NFTCard
                 key={`nft-${i}`}
@@ -130,7 +142,7 @@ const Home = () => {
                   price: (10 - i * 0.534).toFixed(2),
                   seller: `0x${makeId(3)}...${makeId(4)}`,
                   owner: `0x${makeId(3)}...${makeId(4)}`,
-                  description: 'Cool NFT on Sale',
+                  description: "Cool NFT on Sale",
                 }}
               />
             ))}
