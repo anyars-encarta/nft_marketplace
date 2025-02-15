@@ -18,11 +18,11 @@ const page = () => {
   });
 
   const { theme } = useTheme();
-  const { uploadToIPFS } = useContext(NFTContext);
+  const { uploadToIPFS, createNFT } = useContext(NFTContext);
 
   const onDrop = useCallback(async (acceptedFile) => {
     const url = await uploadToIPFS(acceptedFile[0]);
-  
+
     setFileUrl(url);
   }, []);
 
@@ -95,10 +95,7 @@ const page = () => {
             {fileUrl && (
               <aside>
                 <div>
-                  <img
-                    src={fileUrl}
-                    alt="asset_file"
-                  />
+                  <img src={fileUrl} alt="asset_file" />
                 </div>
               </aside>
             )}
@@ -141,7 +138,7 @@ const page = () => {
           <Button
             btnName="Create NFT"
             classStyles="nft-gradient text-white rounded-md"
-            handleClick={() => {}}
+            handleClick={() => createNFT(formInput, fileUrl, redirect)}
           />
         </div>
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { redirect } from "next/navigation";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import axios from "axios";
@@ -10,11 +11,13 @@ import { multiaddr } from "@multiformats/multiaddr";
 
 import { MarketAddress, MarketAddressABI } from "../constants/constants";
 
+const fetchContract = (signerOrProvider) => new ethers.Contract(MarketAddress, MarketAddressABI, signerOrProvider);
+
 export const NFTContext = React.createContext();
 
 export const NFTProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState("");
-  const nftCurrency = "MATIC";
+  const nftCurrency = "ETH";
 
   const checkIfWalletIsConnected = async () => {
     if (!window.ethereum) return alert("Please install MetaMask");
@@ -69,9 +72,60 @@ export const NFTProvider = ({ children }) => {
     }
   };
 
+  const createNFT = async (formInput, fileUrl, redirect) => {
+    const { name, description, price } = formInput;
+
+    if (!name || !description || !price || !fileUrl)
+      return alert("Please fill in all fields");
+
+    const helia = await createHelia({
+      addresses: {
+        api: multiaddr("/dns4/ipfs.infura.io/tcp/5001/https"),
+      },
+    });
+
+    const data = JSON.stringify({name, description, image: fileUrl});
+
+    try {
+      const fs = unixfs(helia);
+
+      const added = await fs.addBytes(new TextEncoder().encode(data));
+
+      const url = `https://ipfs.infura.io/ipfs/${added.toString()}`;
+
+      await createSale(url, price);
+console.log(4)
+      redirect("/");
+
+    } catch (e) {
+      console.error("Error creating NFT: ", e);
+    }
+  };
+
+  const createSale = async (url, formInputPrice, isReselling, id) => {
+    const web3modal = new Web3Modal();
+    const connection = await web3modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+
+    const price = ethers.utils.parseUnits(formInputPrice, 'ether');
+    const contract = fetchContract(signer);
+    const listingPrice = await contract.getListingPrice();
+
+    const transaction = await contract.createToken(url, price, { value: listingPrice.toString() });
+
+    await transaction.wait();
+  };
+
   return (
     <NFTContext.Provider
-      value={{ nftCurrency, connectWallet, currentAccount, uploadToIPFS }}
+      value={{
+        nftCurrency,
+        connectWallet,
+        currentAccount,
+        uploadToIPFS,
+        createNFT,
+      }}
     >
       {children}
     </NFTContext.Provider>
