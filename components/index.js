@@ -8,6 +8,7 @@ import Banner from "./Banner";
 import CreatorCard from "./CreatorCard";
 import NFTCard from "./NFTCard";
 import Input from "./Input";
+import Loader from "./Loader";
 
 export {
   Navbar,
@@ -19,5 +20,6 @@ export {
   Banner,
   CreatorCard,
   NFTCard,
-  Input
+  Input,
+  Loader
 };
