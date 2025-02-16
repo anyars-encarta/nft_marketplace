@@ -143,7 +143,7 @@ const Home = () => {
                   price: (10 - i * 0.534).toFixed(2),
                   seller: `0x${makeId(3)}...${makeId(4)}`,
                   owner: `0x${makeId(3)}...${makeId(4)}`,
-                  description: "Cool NFT on Sale",
+                  description: "Etiam pellentesque sit amet diam et porta. Sed iaculis metus felis, id ullamcorper mauris consequat sed. Nullam tempor tortor eu nulla vehicula lobortis. Sed placerat nunc a aliquam volutpat. Nam posuere odio eu fringilla blandit. Quisque non urna sodales, feugiat elit nec, rutrum dui. In laoreet, turpis eget tincidunt varius, nunc erat interdum turpis, sed finibus arcu lacus in massa. Pellentesque pulvinar elit eu sem elementum maximus. Nullam justo dolor, auctor ut tincidunt ut, rhoncus et nunc. In tempus, leo et euismod sollicitudin, dui tellus interdum purus, eget hendrerit neque sem eu purus. Suspendisse potenti. Proin sit amet dictum mauris. Vestibulum maximus, elit sed aliquam commodo, purus risus elementum enim, eget viverra sapien justo ac lacus. Praesent sit amet tristique metus, non posuere tellus. Nullam egestas risus ligula, id suscipit augue dictum convallis. Aenean volutpat est sit amet eros maximus, eget lobortis est posuere.",
                 }}
               />
             ))}
