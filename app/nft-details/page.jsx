@@ -28,8 +28,6 @@ const page = () => {
     setIsLoading(false);
   }, [searchParams]);
 
-  console.log("Use Search Params: ", nft);
-
   if (isLoading) {
     return (
       <div className="flexStart min-h-screen">
