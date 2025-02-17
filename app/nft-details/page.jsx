@@ -2,14 +2,14 @@
 
 import { useState, useEffect, useContext } from "react";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { NFTContext } from "@/context/NFTContext";
 import { NFTCard, Loader, Button, Modal, PaymentBodyCmp } from "@/components";
 import { makeId, shortenAddress } from "@/utils";
 import images from "@/assets";
 
 const page = () => {
-  const { currentAccount, nftCurrency } = useContext(NFTContext);
+  const { currentAccount, nftCurrency, buyNFT } = useContext(NFTContext);
   const [isLoading, setIsLoading] = useState(true);
   const [nft, setNft] = useState({
     image: "",
@@ -20,6 +20,7 @@ const page = () => {
     seller: "",
   });
   const [paymentModal, setPaymentModal] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
 
   const searchParams = useSearchParams();
 
@@ -28,6 +29,13 @@ const page = () => {
     setNft(params);
     setIsLoading(false);
   }, [searchParams]);
+
+  const checkout = async () => {
+    await buyNFT(nft);
+
+    setPaymentModal(false);
+    setSuccessModal(true);
+  };
 
   if (isLoading) {
     return (
@@ -117,13 +125,58 @@ const page = () => {
               <Button
                 btnName="Checkout"
                 classStyles="nft-gradient text-white mr-5 sm:mb-5 sm:mr-0 rounded-xl"
-                handleClick={() => {}}
+                handleClick={checkout}
               />
 
               <Button
                 btnName="Cancel"
                 classStyles="border border-nft-red-violet text-nft-red-violet mx-2 rounded-xl"
                 handleClick={() => setPaymentModal(false)}
+              />
+            </div>
+          }
+          handleClose={() => setPaymentModal(false)}
+        />
+      )}
+
+      {successModal && (
+        <Modal
+          header="Payment Successful"
+          body={
+            <div
+              classname="flexCenter flex-col text-center"
+              onClick={() => setSuccessModal(false)}
+            >
+              <div className="relative w-52 h-52">
+                <Image
+                  src={nft.image}
+                  objectFit="cover"
+                  layout="fill"
+                  alt="tick"
+                  className="object-contain"
+                />
+                <p className="font-poppins dark:text-white text-nft-black-1 font-normal text-sm minlg:text-xl mt-10">
+                  You successfully purchased{" "}
+                  <span className="font-semibold">{nft.name}</span>
+                  from
+                  <span className="font-semibold">
+                    {shortenAddress(nft.seller)}
+                  </span>
+                  for
+                  <span className="font-semibold">
+                    {nft.price} {nftCurrency}
+                  </span>
+                </p>
+              </div>
+              body
+            </div>
+          }
+          footer={
+            <div className="flexCenter flex-col">
+              <Button
+                btnName="Check it out"
+                classStyles="nft-gradient text-white sm:mb-5 sm:mr-0 rounded-xl"
+                handleClick={() => redirect("/my-nfts")}
               />
             </div>
           }
