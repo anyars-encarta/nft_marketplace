@@ -5,7 +5,7 @@ import Image from "next/image";
 import { redirect, useSearchParams } from "next/navigation";
 import { NFTContext } from "@/context/NFTContext";
 import { NFTCard, Loader, Button, Modal, PaymentBodyCmp } from "@/components";
-import { makeId, shortenAddress } from "@/utils";
+import { shortenAddress } from "@/utils";
 import images from "@/assets";
 
 const page = () => {
@@ -106,12 +106,35 @@ const page = () => {
             <p className="font-poppins dark:text-white text-nft-black-1 text-base  font-normal border border-gray p-2">
               You cannot buy your own NFT
             </p>
-          ) : (
+          ) : currentAccount === nft.owner.toLowerCase() ? (
             <Button
-              handleClick={() => setPaymentModal(true)}
-              btnName={`Buy for ${nft.price} ${nftCurrency}`}
-              classStyles="nft-gradient text-white mr-5 sm:mr-0 rounded-xl"
+              btnName="List on marketPlace"
+              classStyles="nft-gradient text-white mr-5 sm:mr-0 sm:mb-5 rounded-xl"
+              handleClick={() =>
+                redirect(
+                  `/resell-nft?tokenId=${nft.tokenId}&tokenURI=${nft.tokenURI}`
+                )
+              }
             />
+          ) : (
+            <>
+              <Button
+                handleClick={() => setPaymentModal(true)}
+                btnName={`Buy for ${nft.price} ${nftCurrency}`}
+                classStyles="nft-gradient text-white mr-5 sm:mr-0 sm:mb-5 rounded-xl"
+              />
+
+              <Button
+                btnName="List on MarketPlace"
+                classStyles="nft-gradient text-white mr-5 sm:mr-0 sm:mb-5 rounded-xl"
+                handleClick={() =>
+                  redirect(
+                    // `/resell-nft?tokenId=${nft.tokenId}&tokenURI=${nft.tokenURI}`
+                    `/resell-nft?tokenId=bafkreia6drne2cni3lamb3zlk3a3nrvrryopmqg2fd5lixkt2e5uul5piu&tokenURI=https://ipfs.io/ipfs/bafkreia6drne2cni3lamb3zlk3a3nrvrryopmqg2fd5lixkt2e5uul5piu`
+                  )
+                }
+              />
+            </>
           )}
         </div>
       </div>
