@@ -28,7 +28,6 @@ const page = () => {
 
   const fetchNFT = async () => {
     const data = await axios.get(nft.tokenURI);
-    console.log("The data: ", data);
 
     setPrice(data.price);
     setImage(nft.tokenURI);
