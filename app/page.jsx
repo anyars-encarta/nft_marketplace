@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useContext } from "react";
 
-import { Banner, CreatorCard, NFTCard } from "@/components";
+import { Banner, CreatorCard, NFTCard, SearchBar } from "@/components";
 import images from "@/assets";
 import { makeId, shortenAddress } from "@/utils";
 import Image from "next/image";
@@ -143,7 +143,7 @@ console.log("Top Creators are ", topCreators);
               Hot Bids
             </h1>
 
-            <div>SearchBar</div>
+            <SearchBar />
           </div>
 
           <div className="mt-3 w-full flexStart flex-wrap justify-start md:justify-center">
