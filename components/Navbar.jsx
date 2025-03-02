@@ -11,13 +11,13 @@ import { MenuItems, ButtonGroup } from ".";
 import { NFTContext } from "@/context/NFTContext";
 
 const Navbar = () => {
-  const initialTheme = localStorage.getItem("theme") || "light";
-  const { theme, setTheme } = useTheme(initialTheme);
-
   const [isMobile, setIsMobile] = useState(false);
   const [active, setActive] = useState("Explore NFTs");
   const [isOpen, setIsOpen] = useState(false);
 
+  const initialTheme = localStorage.getItem("theme") || 'light';
+  const { theme, setTheme } = useTheme(initialTheme);
+  
   const { connectWallet, currentAccount } = useContext(NFTContext);
 
   const toggleTheme = () => {

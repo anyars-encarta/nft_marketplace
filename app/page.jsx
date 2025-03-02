@@ -4,10 +4,12 @@ import { useState, useEffect, useRef, useContext } from "react";
 
 import { Banner, CreatorCard, NFTCard } from "@/components";
 import images from "@/assets";
-import { makeId } from "@/utils";
+import { makeId, shortenAddress } from "@/utils";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { NFTContext } from "@/context/NFTContext";
+import { getCreators } from "@/utils/getTopCreators";
+import { sellers } from "@/constants";
 
 const Home = () => {
   const [hideButtons, setHideButtons] = useState(false);
@@ -25,6 +27,8 @@ const Home = () => {
   setNfts([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   }, []);
 
+  // console.log("The Sellers are ", sellers);
+  
   const handleScroll = (direction) => {
     const current = scrollRef.current;
 
@@ -59,6 +63,8 @@ const Home = () => {
     };
   }, []);
 
+  const topCreators = getCreators(sellers);
+console.log("Top Creators are ", topCreators);
   return (
     <div className="flex justify-center sm:px-4 p-12">
       <div className="w-full minmd:w-4/5">
@@ -78,7 +84,17 @@ const Home = () => {
               className="flex flex-row w-max overflow-x-scroll no-scrollbar select-none"
               ref={scrollRef}
             >
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+              {topCreators.map((creator, i) => (
+                <CreatorCard
+                  key={creator.seller}
+                  rank={i + 1}
+                  creatorImage={images[`creator${i + 1}`]}
+                  creatorName={shortenAddress(creator.seller)}
+                  creatorEths={creator.sum}
+                />
+              ))}
+
+              {/* {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
                 <CreatorCard
                   key={`creator-${i}`}
                   rank={i}
@@ -86,7 +102,7 @@ const Home = () => {
                   creatorName={`0x${makeId(3)}...${makeId(4)}`}
                   creatorEths={10 - i * 0.5}
                 />
-              ))}
+              ))} */}
 
               {!hideButtons && (
                 <>
