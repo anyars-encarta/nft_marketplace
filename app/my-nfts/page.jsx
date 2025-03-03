@@ -11,7 +11,9 @@ import images from "@/assets";
 const page = () => {
   const { fetchMyNFTsOrListedMFTs, currentAccount } = useContext(NFTContext);
   const [nfts, setNfts] = useState([]);
+  const [nftsCopy, setNftsCopy] = useState([])
   const [isLoading, setIsLoading] = useState(false);
+  const [activeSelect, setActiveSelect] = useState("Recently Added");
 
   useEffect(() => {
     // fetchMyNFTsOrListedMFTs('fetchMyNFTs')
@@ -20,6 +22,7 @@ const page = () => {
     //   setIsLoading(false);
     // });
     setNfts([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    setNftsCopy([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     // setNfts([])
   }, []);
 
@@ -30,6 +33,18 @@ const page = () => {
       </div>
     );
   }
+
+  const onHandleSearch = (value) => {
+    const filteredNFTs = nfts.filter(({ name }) => name.toLowerCase().includes(value.toLowerCase()));
+
+    if (filteredNFTs.length) {
+      setNfts(filteredNFTs);
+    } else {
+      // re-show all nfts
+    }
+  };
+
+  const onClearSearch = () => {};
 
   return (
     <div className="w-full flex justify-start items-center flex-col min-h-screen">
@@ -65,7 +80,12 @@ const page = () => {
       ) : (
         <div className="sm:px-4 p-12 w-full minmd:w-4/5 flexCenter flex-col">
           <div className="flex-1 w-full flex flex-row sm:flex-col px-4 xs:px-0 minlg:px-8">
-            <SearchBar />
+            <SearchBar
+              activeSelect={activeSelect}
+              setActiveSelect={setActiveSelect}
+              handleSearch={() => onHandleSearch}
+              // clearSearch={() => onClearSearch}
+            />
           </div>
 
           <div className="mt-3 w-full flexCenter flex-wrap">
