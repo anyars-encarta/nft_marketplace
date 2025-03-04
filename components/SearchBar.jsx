@@ -14,7 +14,6 @@ const SearchBar = ({
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
   const [toggle, setToggle] = useState(false);
-  const [filteredName, setFilteredName] = useState("Recently Added");
 
   const { theme } = useTheme();
 
@@ -25,9 +24,6 @@ const SearchBar = ({
 
     return () => clearTimeout(timer);
   }, [debouncedSearch]);
-
-  console.log('The search is: ', search);
-  console.log('The debounced search is: ', debouncedSearch);
 
   useEffect(() => {
     if (search) {
@@ -64,7 +60,7 @@ const SearchBar = ({
         className="relative flexBetween ml-4 sm:ml-0 sm:mt-2 min-w-190 cursor-pointer dark:bg-nft-black-2 bg-white border dark:border-nft-black-2 border-nft-gray-2 px-4 rounded-md"
       >
         <p className="font-poppins dark:text-white text-nft-black-2 font-normal text-xs">
-          {filteredName}
+          {activeSelect}
         </p>
 
         <Image
@@ -86,7 +82,7 @@ const SearchBar = ({
               <p
                 key={index}
                 className="font-poppins dark:text-white text-nft-black-2 font-normal text-xs my-2 cursor-pointer dark:hover:text-white hover:text-nft-dark"
-                onClick={() => setFilteredName(item)}
+                onClick={() => setActiveSelect(item)}
               >
                 {item}
               </p>

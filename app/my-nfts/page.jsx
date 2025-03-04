@@ -36,7 +36,6 @@ const page = () => {
   }
 
   const onHandleSearch = (value) => {
-    console.log('I just found the value in the search: ', value);
     const filteredNFTs = nfts.filter(({ name }) => name.toLowerCase().includes(value.toLowerCase()));
 
     if (filteredNFTs.length) {
@@ -47,9 +46,9 @@ const page = () => {
   };
 
   const onClearSearch = () => {
-    // if(nfts.length && nftsCopy.length) {
+    if(nfts.length && nftsCopy.length) {
       setNfts(nftsCopy);
-    // }
+    }
   };
 
   return (
