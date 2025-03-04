@@ -27,6 +27,25 @@ const page = () => {
     // setNfts([])
   }, []);
 
+  useEffect(() => {
+    const sortedNfts = [...sellers];
+
+    switch (activeSelect) {
+      case "Price: Low to High":
+        setNfts(sortedNfts.sort((a, b) => a.price - b.price));
+        break;
+      case "Price: High to Low":
+        setNfts(sortedNfts.sort((a, b) => b.price - a.price));
+        break;
+      case "Recently Added":
+        setNfts(sortedNfts.sort((a, b) => b.id - a.id));
+        break;
+      default:
+        setNfts(nfts);
+        break;
+    };
+  }, [activeSelect]);
+
   if (isLoading) {
     return (
       <div className="flexStart min-h-screen">

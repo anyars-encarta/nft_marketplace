@@ -76,8 +76,8 @@ const SearchBar = ({
           <div className="absolute top-full left-0 right-0 w-full mt-3 z-10 dark:bg-nft-black-2 bg-white border dark:border-nft-black-2 border-nft-gray-2 px-3 py-4 rounded-md">
             {[
               "Recently Added",
-              "Price (low to high)",
-              "Price (high to low)",
+              "Price: Low to High",
+              "Price: High to Low",
             ].map((item, index) => (
               <p
                 key={index}
