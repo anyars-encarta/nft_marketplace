@@ -7,6 +7,7 @@ import { NFTContext } from "@/context/NFTContext";
 import { NFTCard, Loader, Banner, SearchBar } from "@/components";
 import { makeId, shortenAddress } from "@/utils";
 import images from "@/assets";
+import { sellers } from "@/constants";
 
 const page = () => {
   const { fetchMyNFTsOrListedMFTs, currentAccount } = useContext(NFTContext);
@@ -21,8 +22,8 @@ const page = () => {
     //   setNfts(items);
     //   setIsLoading(false);
     // });
-    setNfts([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-    setNftsCopy([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    setNfts(sellers);
+    setNftsCopy(sellers);
     // setNfts([])
   }, []);
 
@@ -35,16 +36,21 @@ const page = () => {
   }
 
   const onHandleSearch = (value) => {
+    console.log('I just found the value in the search: ', value);
     const filteredNFTs = nfts.filter(({ name }) => name.toLowerCase().includes(value.toLowerCase()));
 
     if (filteredNFTs.length) {
       setNfts(filteredNFTs);
     } else {
-      // re-show all nfts
+      setNfts(nftsCopy);
     }
   };
 
-  const onClearSearch = () => {};
+  const onClearSearch = () => {
+    // if(nfts.length && nftsCopy.length) {
+      setNfts(nftsCopy);
+    // }
+  };
 
   return (
     <div className="w-full flex justify-start items-center flex-col min-h-screen">
@@ -71,7 +77,7 @@ const page = () => {
         </div>
       </div>
 
-      {!isLoading && !nfts.length ? (
+      {!isLoading && !nfts.length && !nftsCopy.length ? (
         <div className="flexCenter sm:p-4 p-16">
           <h1 className="font-poppins dark:text-white text-nft-black-1 text-3xl font-extrabold">
             No NFTs Owned
@@ -83,8 +89,8 @@ const page = () => {
             <SearchBar
               activeSelect={activeSelect}
               setActiveSelect={setActiveSelect}
-              handleSearch={() => onHandleSearch}
-              // clearSearch={() => onClearSearch}
+              handleSearch={onHandleSearch}
+              clearSearch={onClearSearch}
             />
           </div>
 
@@ -92,17 +98,10 @@ const page = () => {
             {/* {nfts.map((nft) => (
             <NFTCard key={nft.tokenId} nft={nft} />
           ))} */}
-            {nfts.map((i) => (
+            {nfts.map((nft, i) => (
               <NFTCard
                 key={`nft-${i}`}
-                nft={{
-                  i,
-                  name: `Nifty NFT ${i}`,
-                  price: (10 - i * 0.534).toFixed(2),
-                  seller: `0x${makeId(3)}...${makeId(4)}`,
-                  owner: `0x${makeId(3)}...${makeId(4)}`,
-                  description: "Cool NFT on Sale",
-                }}
+                nft={nft}
                 onProfilePage
               />
             ))}

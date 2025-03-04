@@ -5,10 +5,17 @@ import Image from "next/image";
 import { useTheme } from "next-themes";
 import images from "@/assets";
 
-const SearchBar = ({ activeSelect, setActiveSelect, handleSearch }) => {
+const SearchBar = ({
+  activeSelect,
+  setActiveSelect,
+  handleSearch,
+  clearSearch,
+}) => {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
   const [toggle, setToggle] = useState(false);
+  const [filteredName, setFilteredName] = useState("Recently Added");
+
   const { theme } = useTheme();
 
   useEffect(() => {
@@ -19,13 +26,17 @@ const SearchBar = ({ activeSelect, setActiveSelect, handleSearch }) => {
     return () => clearTimeout(timer);
   }, [debouncedSearch]);
 
+  console.log('The search is: ', search);
+  console.log('The debounced search is: ', debouncedSearch);
+
   useEffect(() => {
     if (search) {
       handleSearch(search);
     } else {
-        // clear search
+       clearSearch();
     }
   }, [search]);
+
 
   return (
     <>
@@ -42,7 +53,7 @@ const SearchBar = ({ activeSelect, setActiveSelect, handleSearch }) => {
         <input
           type="text"
           placeholder="Search NFT here..."
-          className="dark:bg-nft-black-2 bg-white mx-4 w-full dark:text-wghite text-nft-black-1 font-normal text-xs outline-none"
+          className="dark:bg-nft-black-2 bg-white mx-4 w-full dark:text-white text-nft-black-1 font-normal text-xs outline-none"
           onChange={(e) => setDebouncedSearch(e.target.value)}
           value={debouncedSearch}
         />
@@ -53,7 +64,7 @@ const SearchBar = ({ activeSelect, setActiveSelect, handleSearch }) => {
         className="relative flexBetween ml-4 sm:ml-0 sm:mt-2 min-w-190 cursor-pointer dark:bg-nft-black-2 bg-white border dark:border-nft-black-2 border-nft-gray-2 px-4 rounded-md"
       >
         <p className="font-poppins dark:text-white text-nft-black-2 font-normal text-xs">
-          Recently Listed
+          {filteredName}
         </p>
 
         <Image
@@ -75,6 +86,7 @@ const SearchBar = ({ activeSelect, setActiveSelect, handleSearch }) => {
               <p
                 key={index}
                 className="font-poppins dark:text-white text-nft-black-2 font-normal text-xs my-2 cursor-pointer dark:hover:text-white hover:text-nft-dark"
+                onClick={() => setFilteredName(item)}
               >
                 {item}
               </p>
