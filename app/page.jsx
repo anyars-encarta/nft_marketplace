@@ -14,21 +14,22 @@ import { sellers } from "@/constants";
 const Home = () => {
   const [hideButtons, setHideButtons] = useState(false);
   const [nfts, setNfts] = useState([]);
+  const [nftsCopy, setNftsCopy] = useState([]);
   const parentRef = useRef(null);
   const scrollRef = useRef(null);
+  const [activeSelect, setActiveSelect] = useState("Recently Added");
   // const { fetchNFTs } = useContext(NFTContext);
 
   const { theme } = useTheme();
 
   useEffect(() => {
-  //   fetchNFTs().then((items) => {
-  //     setNfts(items);
-  //   });
-  setNfts(sellers);
+    //   fetchNFTs().then((items) => {
+    //     setNfts(items);
+    //   });
+    setNfts(sellers);
+    setNftsCopy(sellers);
   }, []);
 
-  console.log("The Sellers are NFTs ", nfts);
-  
   const handleScroll = (direction) => {
     const current = scrollRef.current;
 
@@ -63,8 +64,45 @@ const Home = () => {
     };
   }, []);
 
-  const topCreators = getCreators(sellers);
-console.log("Top Creators are ", topCreators);
+  useEffect(() => {
+    const sortedNfts = [...sellers];
+
+    switch (activeSelect) {
+      case "Price: Low to High":
+        setNfts(sortedNfts.sort((a, b) => a.price - b.price));
+        break;
+      case "Price: High to Low":
+        setNfts(sortedNfts.sort((a, b) => b.price - a.price));
+        break;
+      case "Recently Added":
+        setNfts(sortedNfts.sort((a, b) => b.id - a.id));
+        break;
+      default:
+        setNfts(nfts);
+        break;
+    }
+  }, [activeSelect]);
+
+  const onHandleSearch = (value) => {
+    const filteredNFTs = nfts.filter(({ name }) =>
+      name.toLowerCase().includes(value.toLowerCase())
+    );
+
+    if (filteredNFTs.length) {
+      setNfts(filteredNFTs);
+    } else {
+      setNfts(nftsCopy);
+    }
+  };
+
+  const onClearSearch = () => {
+    if (nfts.length && nftsCopy.length) {
+      setNfts(nftsCopy);
+    }
+  };
+
+  const topCreators = getCreators(nftsCopy);
+  
   return (
     <div className="flex justify-center sm:px-4 p-12">
       <div className="w-full minmd:w-4/5">
@@ -142,19 +180,23 @@ console.log("Top Creators are ", topCreators);
             <h1 className="flex-1 before:first:font-poppins dark:text-white text-nft-black-1 text-2xl minlg:text-4xl font-semibold sm:mb-4">
               Hot Bids
             </h1>
-
-            <SearchBar />
+            <div className="flex-2 sm:w-full flex flex-row sm:flex-col">
+              <SearchBar
+                activeSelect={activeSelect}
+                setActiveSelect={setActiveSelect}
+                handleSearch={onHandleSearch}
+                clearSearch={onClearSearch}
+              />
+            </div>
           </div>
+          
 
           <div className="mt-3 w-full flexStart flex-wrap justify-start md:justify-center">
             {/* {nfts.map((nft) => (
               <NFTCard key={nft.tokenId} nft={nft} />
             ))} */}
             {nfts.map((nft, i) => (
-              <NFTCard
-                key={i}
-                nft={nft}
-              />
+              <NFTCard key={i} nft={nft} />
             ))}
           </div>
         </div>
