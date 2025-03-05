@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import { NFTContext } from "@/context/NFTContext";
 import { NFTCard, Loader } from "@/components";
 import { makeId } from "@/utils";
+import { sellers } from "@/constants";
 
 const page = () => {
   const [nfts, setNfts] = useState([]);
@@ -17,7 +18,7 @@ const page = () => {
   //     setNfts(items);
   //     setIsLoading(false);
   //   });
-    setNfts([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    setNfts(sellers)
   }, []);
 
   if (isLoading) {
@@ -48,17 +49,10 @@ const page = () => {
             {/* {nfts.map((nft) => (
               <NFTCard key={nft.tokenId} nft={nft} />
             ))} */}
-            {nfts.map((i) => (
+            {nfts.map((nft, i) => (
               <NFTCard
                 key={`nft-${i}`}
-                nft={{
-                  i,
-                  name: `Nifty NFT ${i}`,
-                  price: (10 - i * 0.534).toFixed(2),
-                  seller: `0x${makeId(3)}...${makeId(4)}`,
-                  owner: `0x${makeId(3)}...${makeId(4)}`,
-                  description: "Cool NFT on Sale",
-                }}
+                nft={nft}
               />
             ))}
           </div>

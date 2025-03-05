@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useContext } from "react";
 
-import { Banner, CreatorCard, NFTCard } from "@/components";
+import { Banner, CreatorCard, Loader, NFTCard, SearchBar } from "@/components";
 import images from "@/assets";
 import { makeId, shortenAddress } from "@/utils";
 import Image from "next/image";
@@ -14,21 +14,25 @@ import { sellers } from "@/constants";
 const Home = () => {
   const [hideButtons, setHideButtons] = useState(false);
   const [nfts, setNfts] = useState([]);
+  const [nftsCopy, setNftsCopy] = useState([]);
   const parentRef = useRef(null);
   const scrollRef = useRef(null);
+  const [activeSelect, setActiveSelect] = useState("Recently Added");
+  const [loading, setLoading] = useState(true);
+
   // const { fetchNFTs } = useContext(NFTContext);
 
   const { theme } = useTheme();
 
   useEffect(() => {
-  //   fetchNFTs().then((items) => {
-  //     setNfts(items);
-  //   });
-  setNfts([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    //   fetchNFTs().then((items) => {
+    //     setNfts(items);
+    //   });
+    setNfts(sellers);
+    setNftsCopy(sellers);
+    setLoading(false);
   }, []);
 
-  // console.log("The Sellers are ", sellers);
-  
   const handleScroll = (direction) => {
     const current = scrollRef.current;
 
@@ -63,38 +67,86 @@ const Home = () => {
     };
   }, []);
 
-  const topCreators = getCreators(sellers);
-console.log("Top Creators are ", topCreators);
+  useEffect(() => {
+    const sortedNfts = [...sellers];
+
+    switch (activeSelect) {
+      case "Price: Low to High":
+        setNfts(sortedNfts.sort((a, b) => a.price - b.price));
+        break;
+      case "Price: High to Low":
+        setNfts(sortedNfts.sort((a, b) => b.price - a.price));
+        break;
+      case "Recently Added":
+        setNfts(sortedNfts.sort((a, b) => b.id - a.id));
+        break;
+      default:
+        setNfts(nfts);
+        break;
+    }
+  }, [activeSelect]);
+
+  const onHandleSearch = (value) => {
+    const filteredNFTs = nfts.filter(({ name }) =>
+      name.toLowerCase().includes(value.toLowerCase())
+    );
+
+    if (filteredNFTs.length) {
+      setNfts(filteredNFTs);
+    } else {
+      setNfts(nftsCopy);
+    }
+  };
+
+  const onClearSearch = () => {
+    if (nfts.length && nftsCopy.length) {
+      setNfts(nftsCopy);
+    }
+  };
+
+  const topCreators = getCreators(nftsCopy);
+
   return (
     <div className="flex justify-center sm:px-4 p-12">
       <div className="w-full minmd:w-4/5">
         <Banner
           parentStyles="justify-start mb-6 h-72 sm:h-60 p-12 xs:p-4 xs:h-44 rounded-3xl"
           childStyles="md:text-4xl sm:text-2xl xs:text-xl text-left"
-          bannerText="Discover, collect, and sell extraordinary NFTs"
+          bannerText={<>Discover, collect, and sell <br /> extraordinary NFTs</>}
         />
 
-        <div className="">
-          <h1 className="font-poppins dark:text-white text-nft-black-1 text-2xl minlg:text-4xl font-semibold ml-4 xs:ml-0">
-            Best Sellers
+        {!loading && !nfts.length ? (
+          <h1 className="flexCenter font-poppins dark:text-white text-nft-black-1 text-2xl minlg:text-4xl font-semibold ml-4 xs:ml-0">
+          That&apos;s weird... No NFTs for sale
           </h1>
+        ) : loading ? (
+          <Loader />
+        ) : (
+          <>
+            <div className="">
+              <h1 className="font-poppins dark:text-white text-nft-black-1 text-2xl minlg:text-4xl font-semibold ml-4 xs:ml-0">
+                Top Sellers
+              </h1>
 
-          <div className="relative flex-1 max-w-full flex mt-3" ref={parentRef}>
-            <div
-              className="flex flex-row w-max overflow-x-scroll no-scrollbar select-none"
-              ref={scrollRef}
-            >
-              {topCreators.map((creator, i) => (
-                <CreatorCard
-                  key={creator.seller}
-                  rank={i + 1}
-                  creatorImage={images[`creator${i + 1}`]}
-                  creatorName={shortenAddress(creator.seller)}
-                  creatorEths={creator.sum}
-                />
-              ))}
+              <div
+                className="relative flex-1 max-w-full flex mt-3"
+                ref={parentRef}
+              >
+                <div
+                  className="flex flex-row w-max overflow-x-scroll no-scrollbar select-none"
+                  ref={scrollRef}
+                >
+                  {topCreators.map((creator, i) => (
+                    <CreatorCard
+                      key={creator.seller}
+                      rank={i + 1}
+                      creatorImage={images[`creator${i + 1}`]}
+                      creatorName={shortenAddress(creator.seller)}
+                      creatorEths={creator.sum}
+                    />
+                  ))}
 
-              {/* {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+                  {/* {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
                 <CreatorCard
                   key={`creator-${i}`}
                   rank={i}
@@ -104,67 +156,65 @@ console.log("Top Creators are ", topCreators);
                 />
               ))} */}
 
-              {!hideButtons && (
-                <>
-                  <div
-                    className="absolute w-8 h-8 minlg:w-12 minlg:h-12 top-45 left-0"
-                    onClick={() => handleScroll("left")}
-                  >
-                    <Image
-                      src={images.left}
-                      layout="fill"
-                      objectFit="contain"
-                      alt="left_arrow"
-                      className={theme === "light" ? "filter invert" : ""}
-                    />
-                  </div>
+                  {!hideButtons && (
+                    <>
+                      <div
+                        className="absolute w-8 h-8 minlg:w-12 minlg:h-12 top-45 left-0"
+                        onClick={() => handleScroll("left")}
+                      >
+                        <Image
+                          src={images.left}
+                          layout="fill"
+                          objectFit="contain"
+                          alt="left_arrow"
+                          className={theme === "light" ? "filter invert" : ""}
+                        />
+                      </div>
 
-                  <div
-                    className="absolute w-8 h-8 minlg:w-12 minlg:h-12 top-45 right-0"
-                    onClick={() => handleScroll("right")}
-                  >
-                    <Image
-                      src={images.right}
-                      layout="fill"
-                      objectFit="contain"
-                      alt="left_arrow"
-                      className={theme === "light" ? "filter invert" : ""}
-                    />
-                  </div>
-                </>
-              )}
+                      <div
+                        className="absolute w-8 h-8 minlg:w-12 minlg:h-12 top-45 right-0"
+                        onClick={() => handleScroll("right")}
+                      >
+                        <Image
+                          src={images.right}
+                          layout="fill"
+                          objectFit="contain"
+                          alt="left_arrow"
+                          className={theme === "light" ? "filter invert" : ""}
+                        />
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="mt-10">
-          <div className="flexBetween mx-4 xs:mx-0 minlg:mx-8 sm:flex-col sm:items-start">
-            <h1 className="flex-1 before:first:font-poppins dark:text-white text-nft-black-1 text-2xl minlg:text-4xl font-semibold sm:mb-4">
-              Hot Bids
-            </h1>
+            <div className="mt-10">
+              <div className="flexBetween mx-4 xs:mx-0 minlg:mx-8 sm:flex-col sm:items-start">
+                <h1 className="flex-1 before:first:font-poppins dark:text-white text-nft-black-1 text-2xl minlg:text-4xl font-semibold sm:mb-4">
+                  Hot NFTs
+                </h1>
+                <div className="flex-2 sm:w-full flex flex-row sm:flex-col">
+                  <SearchBar
+                    activeSelect={activeSelect}
+                    setActiveSelect={setActiveSelect}
+                    handleSearch={onHandleSearch}
+                    clearSearch={onClearSearch}
+                  />
+                </div>
+              </div>
 
-            <div>SearchBar</div>
-          </div>
-
-          <div className="mt-3 w-full flexStart flex-wrap justify-start md:justify-center">
-            {/* {nfts.map((nft) => (
+              <div className="mt-3 w-full flexStart flex-wrap justify-start md:justify-center">
+                {/* {nfts.map((nft) => (
               <NFTCard key={nft.tokenId} nft={nft} />
             ))} */}
-            {nfts.map((i) => (
-              <NFTCard
-                key={`nft-${i}`}
-                nft={{
-                  i,
-                  name: `Nifty NFT ${i}`,
-                  price: (10 - i * 0.534).toFixed(2),
-                  seller: `0x${makeId(3)}...${makeId(4)}`,
-                  owner: `0x${makeId(3)}...${makeId(4)}`,
-                  description: "Etiam pellentesque sit amet diam et porta. Sed iaculis metus felis, id ullamcorper mauris consequat sed. Nullam tempor tortor eu nulla vehicula lobortis. Sed placerat nunc a aliquam volutpat. Nam posuere odio eu fringilla blandit. Quisque non urna sodales, feugiat elit nec, rutrum dui. In laoreet, turpis eget tincidunt varius, nunc erat interdum turpis, sed finibus arcu lacus in massa. Pellentesque pulvinar elit eu sem elementum maximus. Nullam justo dolor, auctor ut tincidunt ut, rhoncus et nunc. In tempus, leo et euismod sollicitudin, dui tellus interdum purus, eget hendrerit neque sem eu purus. Suspendisse potenti. Proin sit amet dictum mauris. Vestibulum maximus, elit sed aliquam commodo, purus risus elementum enim, eget viverra sapien justo ac lacus. Praesent sit amet tristique metus, non posuere tellus. Nullam egestas risus ligula, id suscipit augue dictum convallis. Aenean volutpat est sit amet eros maximus, eget lobortis est posuere.",
-                }}
-              />
-            ))}
-          </div>
-        </div>
+                {nfts.map((nft, i) => (
+                  <NFTCard key={i} nft={nft} />
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

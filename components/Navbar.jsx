@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useContext, use } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { redirect } from "next/navigation";
+import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,14 +11,33 @@ import images from "@/assets";
 import { MenuItems, ButtonGroup } from ".";
 import { NFTContext } from "@/context/NFTContext";
 
+// const checkActive = (active, setActive, path) => {
+//   // console.log("redirecting: ", redirect)
+//   console.log("Active State: ", active)
+//   switch (path) {
+//     case "/":
+//       if (active !== "Explore NFTs") setActive("Explore NFTs");
+//       break;
+//     case "/listed-nfts":
+//       if (active !== "Listed NFTs") setActive("Listed NFTs");
+//       break;
+//     case "/create-nft":
+//       setActive("");
+//       break;
+
+//     default:
+//       setActive("");
+//   }
+// };
+
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [active, setActive] = useState("Explore NFTs");
   const [isOpen, setIsOpen] = useState(false);
 
-  const initialTheme = localStorage.getItem("theme") || 'light';
+  const initialTheme = localStorage.getItem("theme") || "light";
   const { theme, setTheme } = useTheme(initialTheme);
-  
+
   const { connectWallet, currentAccount } = useContext(NFTContext);
 
   const toggleTheme = () => {
@@ -32,6 +52,10 @@ const Navbar = () => {
       });
     }
   }, []);
+
+  // useEffect(() => {
+  //   checkActive(active, setActive, redirect);
+  // }, [redirect]);
 
   return (
     <nav className="flexBetween w-full fixed z-10 p-4 flex-row border-b dark:bg-nft-dark bg-white dark:border-nft-black-1 border-nft-gray-1">
