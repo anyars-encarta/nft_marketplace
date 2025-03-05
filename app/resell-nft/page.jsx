@@ -8,9 +8,8 @@ import axios from "axios";
 import Image from "next/image";
 
 const page = () => {
-  const { createSale } = useContext(NFTContext);
+  const { createSale, isLoadingNFT } = useContext(NFTContext);
   const [nft, setNft] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
 
@@ -41,7 +40,7 @@ const page = () => {
       redirect('/');
     };
 
-  if (isLoading) {
+  if (isLoadingNFT) {
     return (
       <div className="flexStart min-h-screen">
         <Loader />
