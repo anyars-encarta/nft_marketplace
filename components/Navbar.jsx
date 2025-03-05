@@ -39,7 +39,14 @@ const Navbar = () => {
   const { theme, setTheme } = useTheme(initialTheme);
 
   const { connectWallet, currentAccount } = useContext(NFTContext);
-
+  
+  useEffect(() => {
+    if (localStorage.getItem("theme") === "light") {
+      setTheme("light");
+    } else {
+      setTheme("dark");
+    }
+  }, []);
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
     localStorage.setItem("theme", theme === "dark" ? "light" : "dark");
@@ -57,6 +64,7 @@ const Navbar = () => {
   //   checkActive(active, setActive, redirect);
   // }, [redirect]);
 
+  
   return (
     <nav className="flexBetween w-full fixed z-10 p-4 flex-row border-b dark:bg-nft-dark bg-white dark:border-nft-black-1 border-nft-gray-1">
       <div className="flex flex-1 flex-row justify-start">
