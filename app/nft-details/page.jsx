@@ -50,7 +50,7 @@ const page = () => {
       <div className="relative flex-1 flexCenter sm:px-4 p-12 border-right md:border-r-0 md:border-b dark:border-nft-black-1 border-nft-gray-1">
         <div className="relative w-557 minmd:w-2/3 minmd:h-2/3 sm:w-full sm:h-300 h-557">
           <Image
-            src={images[`nft${nft.i}`]}
+            src={images[`nft${nft.id}`]}
             objectFit="cover"
             alt="nft"
             className="rounded-xl shadow-lg"
