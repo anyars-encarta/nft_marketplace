@@ -35,8 +35,7 @@ const Navbar = () => {
   const [active, setActive] = useState("Explore NFTs");
   const [isOpen, setIsOpen] = useState(false);
 
-  const initialTheme = localStorage.getItem("theme") || "light";
-  const { theme, setTheme } = useTheme(initialTheme);
+  const { theme, setTheme } = useTheme("light");
 
   const { connectWallet, currentAccount } = useContext(NFTContext);
   
