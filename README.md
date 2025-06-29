@@ -4,7 +4,7 @@ This project demonstrates a basic Hardhat use case. It comes with a sample contr
 
 Try running some of the following tasks:
 
-Try running some of
+Try running some
 
 ```shell
 npx hardhat help
